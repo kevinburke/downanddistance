@@ -24,7 +24,7 @@ def get_stat_params(args):
 
     params = {}
     params['togo'] = args.get('to_go', type=int)
-    yard_line = args.get('fieldposition', type=int)
+    yard_line = args.get('field_position', type=int)
     if yard_line > 50:
         params['fldside'] = 'own'
         params['ydline'] = yard_line - 50
