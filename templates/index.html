@@ -34,26 +34,28 @@
         <div class="span12">
           <form method="GET" action="/calc">
             <fieldset>
-              <label>Yards for 1st Down</label>
-              <input name="to_go" type="number" min="0" placeholder="2" value="2" />
-              <label>Yards to End Zone</label>
-              <input name="field_position" type="number" min="0" placeholder="12" value="12" />
+              <label>How far are you from a 1st down?<span style="color: red; font-size: 20px;">*</span></label>
+              <input name="to_go" style="width: 80px;" type="number" min="0" placeholder="2" value="2" /> yards
+              <label>How far are you from the end zone?<span style="color: red; font-size: 20px;">*</span></label>
+              <input name="field_position" type="number" min="0" placeholder="12" style="width: 80px;" value="12" /> yards
+
+              <h4>If time and score are important:</h4>
               <label>Point difference</label>
-              <input name="margin" type="number" min="0" placeholder="7" value="7" />
+              <input name="margin" type="number" min="0" />
               <label>Quarter</label>
               <select name="quarter">
                 <option value="1">1st</option>
                 <option value="2">2nd</option>
                 <option value="3">3rd</option>
-                <option value="4">4th</option>
-                <option value="5">OT</option>
+                <option value="4" selected="selected">4th</option>
+                <option value="5">Overtime</option>
               </select>
               <label>Time on the clock (min : sec)</label>
-              <input type="number" value="1" name="minutes" style="width: 80px;" 
-                min="0" max="15" placeholder="1" />
+              <input type="number" name="minutes" style="width: 80px;" 
+                min="0" max="15" />
               :
               <input type="number" name="seconds" style="width: 80px;" min="0" 
-                max="60" placeholder="0" value="0" />
+                max="60" />
               <div class="form-actions">
                 <button type="submit" class="btn btn-primary">Calculate</button>
               </div>
