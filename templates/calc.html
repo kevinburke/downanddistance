@@ -7,7 +7,7 @@
   </head>
   <body>
     {% if same: %}
-    <h1>You should {{ winner_ep }}</h1>
+    <h1>4th and {{ to_go }} from the {{ field_position }}: You should {{ winner_ep }}</h1>
     {% endif %}
     <div class="row-fluid">
       <div class="span12">
@@ -36,7 +36,7 @@
       <div class="span12">
         <h3>Punting</h3>
         <p>
-        Choosing to punt costs the team {{ d['punt']['expected_success_rate'] }} points. 
+        Choosing to punt costs the team {{ d['punt']['expected_points_total'] }} points. 
         {% if winner_ep == 'punt' %}
         This means punting is the best decision.
         {% else %}

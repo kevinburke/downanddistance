@@ -1,9 +1,7 @@
 import os
-import pprint
 
 from bs4 import BeautifulSoup
-from flask import (Flask, render_template, request, flash, redirect,
-    make_response)
+from flask import Flask, render_template, request, flash, redirect
 import requests
 
 app = Flask(__name__)
@@ -96,7 +94,6 @@ def calculate():
             flash("Please provide a valid number for {}".format(param))
             return redirect('/')
 
-
     # fetch the data
     params = get_stat_params(request.args)
     r = requests.get('http://wp.advancednflstats.com/4thDownCalc.php',
@@ -122,8 +119,9 @@ def calculate():
         winner_wp = wp_sorted[0]['action']
 
     # render some html.
-    return render_template('calc.html', same=same, winner_ep=winner_ep,
-                           winner_wp=winner_wp, d=d)
+    return render_template(
+        'calc.html', same=same, winner_ep=winner_ep, winner_wp=winner_wp,
+        to_go=request.args.get('to_go'), field_position=params['ydline'], d=d)
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
