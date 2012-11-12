@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.1.1/css/bootstrap.min.css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <title>Should Your Team Go For It? - Results</title>
+  </head>
+  <body>
+    {% if same: %}
+    <h1>You should {{ winner_ep }}</h1>
+    {% endif %}
+    <div class="row-fluid">
+      <div class="span12">
+        <h3>Going For It</h3>
+        <p>
+        A first down in this situation would be worth 
+        {{ d['go_for_it']['expected_points_success'] }} points, and a turnover 
+        on downs would cost 
+        {{ d['go_for_it']['expected_points_failure'] }} points. 
+        {% if winner_ep == 'go_for_it' %}
+        The total expected points from going for it 
+        ({{ d['go_for_it']['expected_points_total'] }}) exceeds the 
+        expected points from punting ({{ d['punt']['expected_points_total'] }})
+        or kicking a field goal ({{ d['field_goal']['expected_points_total'] }}).
+        {% else %}
+        It would be worth it if teams converted more than 
+        {{ d['go_for_it']['expected_break_even'] }} of their fourth down 
+        attempts, however NFL teams in this position only have a 
+        {{ d['go_for_it']['expected_success_rate'] }} chance of getting a 
+        first down.
+        {% endif %}
+        </p>
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span12">
+        <h3>Punting</h3>
+        <p>
+        Choosing to punt costs the team 0.78 points, which means punting is the best decision.
+        </p>
+      </div>
+    </div>
+
+    <!--A made field goal here is worth 2.4 points, but a miss would cost the team 1.44 points. On average, teams make 55% of their kicks from this distance, which means kicking a field goal is the best decision.-->
+
+    <!---->
+  </body>
+</html>
