@@ -6,57 +6,59 @@
     <title>Should Your Team Go For It?</title>
   </head>
   <body>
-    <div class="row-fluid">
-      <div class="span12">
-        <h1>Should Your Team Go For It?</h1>
-      </div>
-    </div>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
+    <div class="container-fluid">
       <div class="row-fluid">
         <div class="span12">
-          {% for message in messages %}
-          <div class="alert alert-error">{{message}}</div>
-          {% endfor %}
+          <h1>Should Your Team Go For It?</h1>
         </div>
       </div>
-      {% endif %}
-    {% endwith %}
-    <div class="row-fluid">
-      <div class="span12">
-        Source: <a href="http://wp.advancednflstats.com/4thdncalc1.php">
-          Brian Burke's 4th Down Calculator</a>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="row-fluid">
+          <div class="span12">
+            {% for message in messages %}
+            <div class="alert alert-error">{{message}}</div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      {% endwith %}
+      <div class="row-fluid">
+        <div class="span12">
+          Source: <a href="http://wp.advancednflstats.com/4thdncalc1.php">
+            Brian Burke's 4th Down Calculator</a>
+        </div>
       </div>
-    </div>
-    <div class="row-fluid">
-      <div class="span12">
-        <form method="GET" action="/calc">
-          <fieldset>
-            <label>Yards for 1st Down</label>
-            <input name="to_go" type="number" min="0" placeholder="2" value="2" />
-            <label>Yards to End Zone</label>
-            <input name="field_position" type="number" min="0" placeholder="12" value="12" />
-            <label>Point difference</label>
-            <input name="margin" type="number" min="0" placeholder="7" value="7" />
-            <label>Quarter</label>
-            <select name="quarter">
-              <option value="1">1st</option>
-              <option value="2">2nd</option>
-              <option value="3">3rd</option>
-              <option value="4">4th</option>
-              <option value="5">OT</option>
-            </select>
-            <label>Time on the clock (min : sec)</label>
-            <input type="number" value="1" name="minutes" style="width: 80px;" 
-              min="0" max="15" placeholder="1" />
-            :
-            <input type="number" name="seconds" style="width: 80px;" min="0" 
-              max="60" placeholder="0" value="0" />
-            <div class="form-actions">
-              <button type="submit" class="btn btn-primary">Calculate</button>
-            </div>
-          </fieldset>
-        </form>
+      <div class="row-fluid">
+        <div class="span12">
+          <form method="GET" action="/calc">
+            <fieldset>
+              <label>Yards for 1st Down</label>
+              <input name="to_go" type="number" min="0" placeholder="2" value="2" />
+              <label>Yards to End Zone</label>
+              <input name="field_position" type="number" min="0" placeholder="12" value="12" />
+              <label>Point difference</label>
+              <input name="margin" type="number" min="0" placeholder="7" value="7" />
+              <label>Quarter</label>
+              <select name="quarter">
+                <option value="1">1st</option>
+                <option value="2">2nd</option>
+                <option value="3">3rd</option>
+                <option value="4">4th</option>
+                <option value="5">OT</option>
+              </select>
+              <label>Time on the clock (min : sec)</label>
+              <input type="number" value="1" name="minutes" style="width: 80px;" 
+                min="0" max="15" placeholder="1" />
+              :
+              <input type="number" name="seconds" style="width: 80px;" min="0" 
+                max="60" placeholder="0" value="0" />
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Calculate</button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
       </div>
     </div>
   </body>
