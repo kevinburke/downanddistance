@@ -30,10 +30,10 @@ def get_stat_params(args):
     else:
         params['fldside'] = 'opp'
         params['ydline'] = yard_line
-    params['scorediff'] = args.get('margin', type=int)
-    params['qtr'] = args.get('quarter', type=int)
-    params['minleft'] = args.get('minutes', type=int)
-    params['sec'] = args.get('seconds', type=int)
+    params['scorediff'] = args.get('margin', '', int)
+    params['qtr'] = args.get('quarter', '', int)
+    params['minleft'] = args.get('minutes', '', int)
+    params['sec'] = args.get('seconds', '', int)
     return params
 
 def parse_stats(html):
@@ -81,16 +81,17 @@ def home():
     return render_template('index.html')
 
 def compare_ep(item1, item2):
-    return item1['expected_points_total'] > item2['expected_points_total']
+    diff = item2['expected_points_total'] - item1['expected_points_total']
+    return cmp(diff, 0)
 
 def compare_wp(item1, item2):
-    return item1['win_probability_total'] > item2['win_probability_total']
+    diff = item2['win_probability_total'] - item1['win_probability_total']
+    return cmp(diff, 0)
 
 @app.route('/calc')
 def calculate():
     # validate parameters
-    for param in ['to_go', 'field_position', 'margin', 'quarter', 'minutes',
-                  'seconds']:
+    for param in ['to_go', 'field_position']:
         if request.args.get(param, type=int) is None:
             flash("Please provide a valid number for {}".format(param))
             return redirect('/')
@@ -98,7 +99,8 @@ def calculate():
     # fetch the data
     params = get_stat_params(request.args)
     r = requests.get('http://wp.advancednflstats.com/4thDownCalc.php',
-                     params=params)
+                     params=params,
+                     headers={'User-Agent': 'DownAndDistance/1.0'})
     d = parse_stats(r.content)
 
     # fancy logic!
@@ -112,6 +114,7 @@ def calculate():
     wp_sorted = sorted([go, punt, fg], cmp=compare_wp)
 
     if ep_sorted[0] == wp_sorted[0]:
+        print ep_sorted
         same = True
         winner_ep = winner_wp = ep_sorted[0]['action']
     else:
@@ -119,10 +122,13 @@ def calculate():
         winner_ep = ep_sorted[0]['action']
         winner_wp = wp_sorted[0]['action']
 
+    print params['ydline']
+    yard_line = (params['ydline'] if params['fldside'] == 'opp'
+                 else 50 - params['ydline'])
     # render some html.
     return render_template(
         'calc.html', same=same, winner_ep=winner_ep, winner_wp=winner_wp,
-        to_go=request.args.get('to_go'), field_position=params['ydline'], d=d)
+        to_go=request.args.get('to_go'), field_position=yard_line, d=d)
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
