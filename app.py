@@ -5,7 +5,8 @@ from flask import Flask, render_template, request, flash, redirect
 import requests
 
 app = Flask(__name__)
-app.secret_key = 'eK+sm^.2E{yBE26taB]cfCGDgCXjqEsequtRBTLD'
+app.secret_key = (os.environ.get('DD_FLASK_SECRET', None) or
+                  'eK+sm^.2E{yBE26taB]cfCGDgCXjqEsequtRBTLD')
 
 my_titles = {
     'EP Fail: ': 'expected_points_failure',
