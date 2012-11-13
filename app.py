@@ -113,14 +113,13 @@ def calculate():
     ep_sorted = sorted([go, punt, fg], cmp=compare_ep)
     wp_sorted = sorted([go, punt, fg], cmp=compare_wp)
 
-    if ep_sorted[0] == wp_sorted[0]:
-        print ep_sorted
-        same = True
-        winner_ep = winner_wp = ep_sorted[0]['action']
-    else:
+    if ep_sorted[0] != wp_sorted[0] and params['scorediff']:
         same = False
         winner_ep = ep_sorted[0]['action']
         winner_wp = wp_sorted[0]['action']
+    else:
+        same = True
+        winner_ep = winner_wp = ep_sorted[0]['action']
 
     print params['ydline']
     yard_line = (params['ydline'] if params['fldside'] == 'opp'
