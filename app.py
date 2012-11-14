@@ -1,4 +1,5 @@
 import os
+import pprint
 
 from bs4 import BeautifulSoup
 from flask import Flask, render_template, request, flash, redirect
@@ -26,7 +27,7 @@ def get_stat_params(args):
     yard_line = args.get('field_position', type=int)
     if yard_line > 50:
         params['fldside'] = 'own'
-        params['ydline'] = yard_line - 50
+        params['ydline'] = 100 - yard_line
     else:
         params['fldside'] = 'opp'
         params['ydline'] = yard_line
@@ -42,11 +43,14 @@ def parse_stats(html):
     soup = BeautifulSoup(html)
     table = soup.find('table')
     rows = table.findAll('tr')
-    first_pass_be = first_pass_sr = False
+    first_pass_be = first_pass_sr = True
     d = {
-        'go_for_it':  {'action': 'go_for_it'},
-        'punt':       {'action': 'punt'},
-        'field_goal': {'action': 'field_goal'}
+        'go_for_it':  {'action': 'go_for_it',
+                       'friendly_name': 'go for it'},
+        'punt':       {'action': 'punt',
+                       'friendly_name': 'punt',},
+        'field_goal': {'action': 'field_goal',
+                       'friendly_name': 'field goal'}
     }
 
     for row in rows:
@@ -58,6 +62,7 @@ def parse_stats(html):
             row_title = ('expected_break_even' if first_pass_be
                          else 'win_break_even')
             first_pass_be = not first_pass_be
+            print row_title
 
         elif cols[0].text == 'Success Rate: ':
             row_title = ('expected_success_rate' if first_pass_sr
@@ -115,21 +120,19 @@ def calculate():
 
     if ep_sorted[0] != wp_sorted[0] and params['scorediff']:
         same = False
-        winner_ep = ep_sorted[0]['action']
-        winner_wp = wp_sorted[0]['action']
+        winner_ep = ep_sorted[0]['friendly_name']
+        winner_wp = wp_sorted[0]['friendly_name']
     else:
         same = True
-        winner_ep = winner_wp = ep_sorted[0]['action']
+        winner_ep = winner_wp = ep_sorted[0]['friendly_name']
 
-    print params['ydline']
-    yard_line = (params['ydline'] if params['fldside'] == 'opp'
-                 else 50 - params['ydline'])
-    # render some html.
+    show_field_goal = d['field_goal']['expected_success_rate'] > 0.01
+
     return render_template(
         'calc.html', same=same, winner_ep=winner_ep, winner_wp=winner_wp,
-        to_go=request.args.get('to_go'), field_position=yard_line, d=d)
+        to_go=request.args.get('to_go'), field_position=params['ydline'], d=d,
+        show_field_goal=show_field_goal)
 
 if __name__ == '__main__':
-    # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)

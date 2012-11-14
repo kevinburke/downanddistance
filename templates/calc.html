@@ -7,8 +7,13 @@
     <title>Should Your Team Go For It? - Results</title>
   </head>
   <body>
+    <h1>4th and {{ to_go }} from the {{ field_position }}</h1>
     {% if same: %}
-    <h1>4th and {{ to_go }} from the {{ field_position }}: You should {{ winner_ep }}</h1>
+    <h1>You should {{ winner_ep }}</h1>
+    {% else: %}
+    <h3>You should:</h3>
+    <h3>- {{ winner_ep }} if the time and score are not important.</h3>
+    <h3>- {{ winner_wp }} if the time and score are important.</h3>
     {% endif %}
     <div class="row-fluid">
       <div class="span12">
@@ -18,16 +23,19 @@
         {{ d['go_for_it']['expected_points_success'] }} points, and a turnover 
         on downs would cost 
         {{ d['go_for_it']['expected_points_failure'] }} points. 
-        {% if winner_ep == 'go_for_it' %}
+        {% if winner_ep == "go for it" %}
         The total expected points from going for it 
-        ({{ d['go_for_it']['expected_points_total'] }}) exceeds the 
-        expected points from punting ({{ d['punt']['expected_points_total'] }})
-        or kicking a field goal ({{ d['field_goal']['expected_points_total'] }}).
+        ({{ d['go_for_it']['expected_points_total'] }}, assuming a successful 
+        conversion rate of {{ d['go_for_it']['expected_success_rate'] * 100 }}%) 
+        exceeds the expected points from punting 
+        ({{ d['punt']['expected_points_total'] }}) 
+        {% if show_field_goal %}or kicking a field goal 
+        ({{ d['field_goal']['expected_points_total'] }}){% endif %}.
         {% else %}
         It would be worth it if teams converted more than 
-        {{ d['go_for_it']['expected_break_even'] }} of their fourth down 
+        {{ d['go_for_it']['expected_break_even'] * 100 }}% of their fourth down 
         attempts, however NFL teams in this position only have a 
-        {{ d['go_for_it']['expected_success_rate'] }} chance of getting a 
+        {{ d['go_for_it']['expected_success_rate'] * 100 }}% chance of getting a 
         first down.
         {% endif %}
         </p>
@@ -41,14 +49,30 @@
         {% if winner_ep == 'punt' %}
         This means punting is the best decision.
         {% else %}
-        Going for it or kicking a field goal makes more sense.
+        Going for it {% if show_field_goal %}or kicking a field goal{% endif %} makes more sense.
         {% endif %}
         </p>
       </div>
     </div>
-
-    <!--A made field goal here is worth 2.4 points, but a miss would cost the team 1.44 points. On average, teams make 55% of their kicks from this distance, which means kicking a field goal is the best decision.-->
-
-    <!---->
+    {% if show_field_goal %}
+    <div class="row-fluid">
+      <div class="span12">
+        <h3>Kicking a Field Goal</h3>
+        <p>
+        Kicking a field goal gains the team 
+        {{ d["field_goal"]["expected_points_total"] }} points on average 
+        ({{ d["field_goal"]["expected_points_success"] }} for a make, 
+        {{ d["field_goal"]["expected_points_failure"] }} for a miss, with a 
+        {{ d["field_goal"]["expected_success_rate"] }} chance of 
+        making the kick). 
+        {% if winner_ep == "field goal" %}
+        This means kicking a field goal is the best decision.
+        {% else %}
+        Going for it or punting makes more sense.
+        {% endif %}
+        </p>
+      </div>
+    </div>
+    {% endif %}
   </body>
 </html>
