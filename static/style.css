@@ -1,0 +1,32 @@
+html, body, .container-fluid {
+    background-color: #020202;
+    color: #eaeaea;
+}
+
+.container-fluid a, a:visited {
+    color: #3acaea;
+}
+
+.container-fluid input,
+.container-fluid input[type="text"],
+.container-fluid input[type="password"],
+.container-fluid input[type="datetime"],
+.container-fluid input[type="datetime-local"],
+.container-fluid input[type="date"],
+.container-fluid input[type="month"],
+.container-fluid input[type="time"],
+.container-fluid input[type="week"],
+.container-fluid input[type="number"],
+.container-fluid input[type="email"],
+.container-fluid input[type="url"],
+.container-fluid input[type="search"],
+.container-fluid input[type="tel"],
+.container-fluid input[type="color"],
+.uneditable-input {
+    background-color: #eaeaea;
+}
+
+.container-fluid .form-actions {
+    border-top: 1px solid #2f2f2f;
+    background-color: #1f1f1f;
+}
